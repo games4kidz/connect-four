@@ -108,10 +108,11 @@ GridComponent.oninit = function (vnode) {
         // First align pending chip with column
         state.alignPendingChipWithColumn({
           column: args.column,
-          // On the AI's turn, automatically place the chip after aligning it
-          // with the specified column
+          // If the player places chips completely prgrammatically (like the AI,
+          // or a player in simulation mode), automatically place the chip after
+          // aligning it with the specified column
           transitionEnd: function () {
-            if (game.currentPlayer.type === 'ai') {
+            if (game.currentPlayer.isMechanical) {
               game.currentPlayer.wait(function () {
                 state.placePendingChip(args);
               });
@@ -169,11 +170,13 @@ GridComponent.oninit = function (vnode) {
       });
     }
   });
-  // Place chip automatically when AI computes its next move on its turn
-  game.emitter.on('ai-player:compute-next-move', function (aiPlayer, bestMove) {
-    aiPlayer.wait(function () {
+  // Detect mehanical players, which may place chips completely programmatically
+  // (in the case of the AI, or in simulation mode, where a sequence of moves
+  // can be entered manually to simulate a game)
+  game.emitter.on('mechanical-player:place-chip', function (player, moveColumn) {
+    player.wait(function () {
       state.placePendingChip({
-        column: bestMove.column
+        column: moveColumn
       });
     });
   });

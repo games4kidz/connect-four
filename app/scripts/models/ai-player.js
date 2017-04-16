@@ -1,36 +1,25 @@
 'use strict';
 
 var Grid = require('./grid');
-var Player = require('./player');
+var MechanicalPlayer = require('./mechanical-player');
 var Chip = require('./chip');
 
 // An AI player that can think for itself; every AI player inherits from the
-// base Player model
+// MechanicalPlayer model
 function AIPlayer(args) {
-  Player.call(this, args);
+  MechanicalPlayer.call(this, args);
 }
-AIPlayer.prototype = Object.create(Player.prototype);
+AIPlayer.prototype = Object.create(MechanicalPlayer.prototype);
 AIPlayer.prototype.type = 'ai';
-// The duration to wait (in ms) for the user to process the AI player's actions
-AIPlayer.waitDelay = 150;
 // The maximum number of grid moves to look ahead (this determines the AI's
 // intelligence)
 AIPlayer.maxComputeDepth = 3;
-
-// Wait for a short moment to give the user time to see and process the AI
-// player's actions
-AIPlayer.prototype.wait = function (callback) {
-  setTimeout(function () {
-    callback();
-  }, AIPlayer.waitDelay);
-};
 
 // Compute the column where the AI player should place its next chip
 AIPlayer.prototype.computeNextMove = function (game) {
   var bestMove = this.maximizeMove(
     game.grid, game.getOtherPlayer(this), AIPlayer.maxComputeDepth,
     Grid.minScore, Grid.maxScore);
-  game.emitter.emit('ai-player:compute-next-move', this, bestMove);
   return bestMove;
 };
 

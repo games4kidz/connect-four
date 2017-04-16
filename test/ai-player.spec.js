@@ -2,6 +2,7 @@
 
 var expect = require('chai').expect;
 var AIPlayer = require('../app/scripts/models/ai-player');
+var MechanicalPlayer = require('../app/scripts/models/mechanical-player');
 var Game = require('../app/scripts/models/game');
 var Chip = require('../app/scripts/models/chip');
 
@@ -35,6 +36,7 @@ describe('AI player', function () {
     expect(aiPlayer).to.have.property('color', 'red');
     expect(aiPlayer).to.have.property('score', 0);
     expect(aiPlayer).to.have.property('type', 'ai');
+    expect(aiPlayer).to.be.an.instanceof(MechanicalPlayer);
   });
 
   it('should block horizontal opponent win (#1)', function () {
