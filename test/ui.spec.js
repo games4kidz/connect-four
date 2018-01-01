@@ -54,19 +54,22 @@ describe('game UI', function () {
 
   // Minimize the transition duration to speed up tests (interestingly, a
   // duration of 0ms will prevent transitionEnd from firing)
-  before(function () {
+  before(function (done) {
     var style = document.createElement('style');
     style.innerHTML = '* {transition-duration: 200ms !important;}';
     document.head.appendChild(style);
+    done();
   });
 
-  beforeEach(function () {
+  beforeEach(function (done) {
     document.body.appendChild(document.createElement('main'));
     m.mount(qs('main'), GameComponent);
+    done();
   });
 
-  afterEach(function () {
+  afterEach(function (done) {
     m.mount(qs('main'), null);
+    done();
   });
 
   it('should mount on main', function () {
