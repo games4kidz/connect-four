@@ -98,7 +98,7 @@ module.exports = {
           'public/fonts/*.*'
         ],
         stripPrefix: 'public',
-        replacePrefix: '/connect-four'
+        replacePrefix: ''
       }
     }
   }

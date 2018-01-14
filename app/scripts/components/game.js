@@ -2,6 +2,7 @@
 
 import _ from 'underscore';
 import m from 'mithril';
+import io from 'socket.io-client';
 import classNames from 'classnames';
 import Game from '../models/game.js';
 import GridComponent from './grid.js';
@@ -17,6 +18,7 @@ class GameComponent {
       debug: (window.location.host !== 'projects.calebevans.me' && !window.__karma__)
     });
     this.initializeAnalytics();
+    this.socket = io();
   }
 
   initializeAnalytics() {
@@ -63,17 +65,17 @@ class GameComponent {
     }
   }
 
-  view() {
+  view({ state: { game, socket } }) {
     return m('div#game', {
       class: classNames({'in-progress': this.game.inProgress})
     }, [
       m('div.game-column', [
         m('h1', 'Connect Four'),
-        m(DashboardComponent, {game: this.game})
+        m(DashboardComponent, { game, socket })
       ]),
       m('div.game-column', [
-        m(GridComponent, {game: this.game}),
-        m(ScoreboardComponent, {game: this.game})
+        m(GridComponent, { game, socket }),
+        m(ScoreboardComponent, { game, socket })
       ])
     ]);
   }
