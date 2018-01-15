@@ -7,8 +7,8 @@ app.use(express.static('public'));
 
 let server = http.createServer(app);
 let io = socketio(server);
-io.on('connection', (/* socket */) => {
-  console.log('a user connected');
+io.on('connection', (socket) => {
+  console.log('a user connected', socket.id);
 });
 
 server.listen(3000, () => {
