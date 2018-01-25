@@ -19,6 +19,7 @@ class GameComponent {
     });
     this.initializeAnalytics();
     this.socket = io();
+    this.manageSession();
   }
 
   initializeAnalytics() {
@@ -63,6 +64,14 @@ class GameComponent {
         eventCategory: this.game.humanPlayerCount === 1 ? '1-Player Game' : '2-Player Game'
       }, args));
     }
+  }
+
+  manageSession() {
+    this.socket.on('player:create', (playerId) => {
+      console.log('create online player', playerId);
+      localStorage.setItem('playerId', playerId);
+    });
+    this.socket.emit('player:authenticate', localStorage.getItem('playerId'));
   }
 
   view({ state: { game, socket } }) {

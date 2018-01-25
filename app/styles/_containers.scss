@@ -10,6 +10,8 @@ body {
   font-family: $sans-serif;
   text-align: center;
   overflow-y: scroll;
+  background-color: #333;
+  color: #fff;
 }
 
 // Ensure that the <main> element renders correctly on browsers that don't fully
